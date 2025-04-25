@@ -15,7 +15,6 @@ import {
   AUTO_SAVE_INTERVAL, 
   AUTO_SAVE_NOTIFICATION_DURATION,
   MAX_NOTE_HEIGHT,
-  LOADING_DURATIONS,
   ViewMode 
 } from '@/config/constants';
 
@@ -113,8 +112,6 @@ export default function NoteCard({ note, onUpdate, onDelete, noteNumber = 1, vie
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-
-  // Keep track of the original content and title for cancel operation
   const [originalContent, setOriginalContent] = useState(note.content);
   const [originalTitle, setOriginalTitle] = useState(title);
 
@@ -297,7 +294,7 @@ export default function NoteCard({ note, onUpdate, onDelete, noteNumber = 1, vie
       setIsReading(false);
       setIsExiting(false);
       setIsLoading(false);
-    }, LOADING_DURATIONS.NOTE_CLOSE);
+    }, 300);
   };
 
   const handleStartReading = () => {
@@ -309,7 +306,7 @@ export default function NoteCard({ note, onUpdate, onDelete, noteNumber = 1, vie
       setIsLoading(false);
       setIsReading(true);
       setShowContent(true);
-    }, LOADING_DURATIONS.NOTE_OPEN);
+    }, 300);
   };
 
   // Helper function to get view mode specific styles

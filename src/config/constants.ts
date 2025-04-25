@@ -26,10 +26,3 @@ export const VIEW_MODES: { [key in ViewMode]: { icon: string; label: string } } 
     label: 'Large Cards'
   }
 }; 
-
-// Loading screen durations (in milliseconds)
-export const LOADING_DURATIONS = {
-  APP_LAUNCH: 2000,    // 5 seconds for app launch
-  NOTE_OPEN: 2000,     // 3 seconds for opening a note
-  NOTE_CLOSE: 2000     // 3 seconds for closing/saving a note
-} as const; 
