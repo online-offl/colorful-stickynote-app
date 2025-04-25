@@ -8,8 +8,12 @@ export default function Document() {
         <Main />
         <NextScript />
         {/* Add Eruda for mobile debugging */}
-        <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-        <script dangerouslySetInnerHTML={{ __html: 'eruda.init();' }} />
+        <script async src="https://cdn.jsdelivr.net/npm/eruda"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: '(function(){var script=document.createElement("script");script.onload=function(){eruda.init()};script.src="https://cdn.jsdelivr.net/npm/eruda";document.body.appendChild(script)})();',
+          }}
+        />
       </body>
     </Html>
   )

@@ -1,19 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  distDir: 'build',
   output: 'standalone',
   typescript: {
-    ignoreBuildErrors: true
+    ignoreBuildErrors: false
   },
-  swcMinify: false,
-  productionBrowserSourceMaps: false,
+  eslint: {
+    ignoreDuringBuilds: false
+  },
   experimental: {
     forceSwcTransforms: true
-  },
-  generateBuildId: () => 'build',
-  eslint: {
-    ignoreDuringBuilds: true,
-    ignoreDevelopment: true
   }
 }
 

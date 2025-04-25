@@ -61,21 +61,6 @@ const colors: { [key in NoteColor]: string } = {
   fuchsia: 'bg-[#e42256] border-[#e42256]/60',
 };
 
-const headerColors: { [key in NoteColor]: { bg: string; text: string } } = {
-  coral: { bg: 'bg-[#00b1b0]', text: 'text-white' },
-  blueGreen: { bg: 'bg-[#e42256]', text: 'text-white' },
-  freesia: { bg: 'bg-[#e42256]', text: 'text-white' },
-  fuchsia: { bg: 'bg-[#00b1b0]', text: 'text-white' },
-};
-
-const FAB_STYLES = {
-  button: 'w-12 h-12 rounded-full bg-[#e42256] text-white shadow-lg hover:bg-[#d41e4d] transition-all duration-200 flex items-center justify-center text-2xl hover:scale-110',
-  menuItem: {
-    save: 'w-full px-4 py-3 text-left hover:bg-gray-100 transition-colors flex items-center gap-2 text-[#e42256]',
-    cancel: 'w-full px-4 py-3 text-left hover:bg-gray-100 transition-colors flex items-center gap-2 text-gray-600'
-  }
-};
-
 // Add date formatting helper
 const formatLastUpdated = (dateString: string) => {
   const date = new Date(dateString);
@@ -94,16 +79,12 @@ export default function NoteCard({ note, onUpdate, onDelete, noteNumber = 1, vie
   const [isReading, setIsReading] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showContent, setShowContent] = useState(false);
   const [content, setContent] = useState(note.content);
   const [title, setTitle] = useState(note.title || `Note ${noteNumber}`);
   const [showColorPicker, setShowColorPicker] = useState(false);
-  const [showShareOptions, setShowShareOptions] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const colorPickerRef = useRef<HTMLDivElement>(null);
   const colorButtonRef = useRef<HTMLButtonElement>(null);
-  const shareMenuRef = useRef<HTMLDivElement>(null);
-  const shareButtonRef = useRef<HTMLButtonElement>(null);
   const deleteConfirmRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<HTMLTextAreaElement>(null);
   const [showAutoSaveToast, setShowAutoSaveToast] = useState(false);
@@ -200,7 +181,6 @@ export default function NoteCard({ note, onUpdate, onDelete, noteNumber = 1, vie
     setOriginalContent(content);
     setOriginalTitle(title);
     setIsEditing(true);
-    // Focus the editor after animation
     setTimeout(() => {
       editorRef.current?.focus();
     }, 300);
@@ -213,21 +193,6 @@ export default function NoteCard({ note, onUpdate, onDelete, noteNumber = 1, vie
       setIsEditing(false);
       setIsExiting(false);
     }, 300);
-  };
-
-  const handleCancel = () => {
-    setContent(originalContent);
-    setTitle(originalTitle);
-    setIsExiting(true);
-    setTimeout(() => {
-      setIsEditing(false);
-      setIsExiting(false);
-    }, 300);
-  };
-
-  const handleColorChange = (color: NoteColor) => {
-    onUpdate({ ...note, color });
-    setShowColorPicker(false);
   };
 
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
@@ -245,19 +210,6 @@ export default function NoteCard({ note, onUpdate, onDelete, noteNumber = 1, vie
     return colorPalette[color].contrast;
   };
 
-  const getFabStyles = (color: NoteColor) => {
-    const contrastColor = getContrastColor(color);
-    const darkerContrast = contrastColor.replace(/^#/, '');
-    
-    return {
-      button: `w-12 h-12 rounded-full bg-[${contrastColor}] text-white shadow-lg hover:brightness-90 transition-all duration-200 flex items-center justify-center text-2xl hover:scale-110`,
-      menuItem: {
-        save: `w-full px-4 py-3 text-left hover:bg-gray-100 transition-colors flex items-center gap-2 text-[${contrastColor}]`,
-        cancel: 'w-full px-4 py-3 text-left hover:bg-gray-100 transition-colors flex items-center gap-2 text-gray-600'
-      }
-    };
-  };
-
   // Helper function to get header styles
   const getHeaderStyles = () => {
     const color = getNoteColor();
@@ -270,20 +222,10 @@ export default function NoteCard({ note, onUpdate, onDelete, noteNumber = 1, vie
     return colors[getNoteColor()] || colors[DEFAULT_COLOR];
   };
 
-  const handleDeleteClick = () => {
-    setShowDeleteConfirm(true);
-  };
-
-  const handleConfirmDelete = () => {
-    onDelete(note.id);
-    setShowDeleteConfirm(false);
-  };
-
   const handleExitView = () => {
     if (isEditing) {
       handleSave();
     }
-    setShowContent(false);
     setIsExiting(true);
     setIsLoading(true);
     onViewStateChange?.(false);
@@ -305,7 +247,6 @@ export default function NoteCard({ note, onUpdate, onDelete, noteNumber = 1, vie
     setTimeout(() => {
       setIsLoading(false);
       setIsReading(true);
-      setShowContent(true);
     }, 300);
   };
 

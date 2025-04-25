@@ -102,19 +102,6 @@ export default function Home() {
     }, 3000);
   };
 
-  const getGridStyles = () => {
-    const baseStyles = 'transition-all duration-700 ease-out';
-    switch (viewMode) {
-      case 'small':
-      case 'medium':
-        return `${baseStyles} flex flex-col gap-4 max-w-4xl mx-auto`;
-      case 'large':
-        return `${baseStyles} grid grid-cols-1 md:grid-cols-2 gap-6 max-w-7xl mx-auto`;
-      default: // tile view
-        return `${baseStyles} grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6`;
-    }
-  };
-
   const handleNoteViewStateChange = (isViewing: boolean) => {
     setIsDetailView(isViewing);
   };
