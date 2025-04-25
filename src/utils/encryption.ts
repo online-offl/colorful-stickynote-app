@@ -1,7 +1,5 @@
 import CryptoJS from 'crypto-js';
-import { Note as AppNote } from '@/types/note';
-
-export type Note = AppNote;
+import { Note } from '@/types/note';
 
 const SECRET_KEY = 'sticky-notes-secret-key'; // In a real app, this should be stored securely
 

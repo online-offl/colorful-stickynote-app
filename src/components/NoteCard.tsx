@@ -81,10 +81,7 @@ export default function NoteCard({ note, onUpdate, onDelete, noteNumber = 1, vie
   const [isLoading, setIsLoading] = useState(false);
   const [content, setContent] = useState(note.content);
   const [title, setTitle] = useState(note.title || `Note ${noteNumber}`);
-  const [showColorPicker, setShowColorPicker] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const colorPickerRef = useRef<HTMLDivElement>(null);
-  const colorButtonRef = useRef<HTMLButtonElement>(null);
   const deleteConfirmRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<HTMLTextAreaElement>(null);
   const [showAutoSaveToast, setShowAutoSaveToast] = useState(false);
@@ -93,8 +90,6 @@ export default function NoteCard({ note, onUpdate, onDelete, noteNumber = 1, vie
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-  const [originalContent, setOriginalContent] = useState(note.content);
-  const [originalTitle, setOriginalTitle] = useState(title);
 
   useEffect(() => {
     if (!note.title) {
@@ -115,16 +110,6 @@ export default function NoteCard({ note, onUpdate, onDelete, noteNumber = 1, vie
         setShowMenu(false);
       }
 
-      // Color picker click outside
-      if (
-        showColorPicker &&
-        colorPickerRef.current &&
-        !colorPickerRef.current.contains(event.target as Node) &&
-        !colorButtonRef.current?.contains(event.target as Node)
-      ) {
-        setShowColorPicker(false);
-      }
-
       // Delete confirmation click outside
       if (
         showDeleteConfirm &&
@@ -142,7 +127,7 @@ export default function NoteCard({ note, onUpdate, onDelete, noteNumber = 1, vie
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [showMenu, showColorPicker, showDeleteConfirm]); // Add dependencies to ensure effect updates
+  }, [showMenu, showDeleteConfirm]); // Add dependencies to ensure effect updates
 
   // Add auto-save effect
   useEffect(() => {
@@ -178,8 +163,6 @@ export default function NoteCard({ note, onUpdate, onDelete, noteNumber = 1, vie
   }, [content, title, isEditing, note, onUpdate]);
 
   const handleStartEditing = () => {
-    setOriginalContent(content);
-    setOriginalTitle(title);
     setIsEditing(true);
     setTimeout(() => {
       editorRef.current?.focus();
@@ -331,36 +314,18 @@ export default function NoteCard({ note, onUpdate, onDelete, noteNumber = 1, vie
               )}
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
-              {isReading && (
-                <>
-                  <button
-                    ref={colorButtonRef}
-                    onClick={() => setShowColorPicker(!showColorPicker)}
-                    className="w-8 h-8 flex items-center justify-center hover:bg-white/20 rounded-full transition-colors text-white flex-shrink-0"
-                  >
-                    🎨
-                  </button>
-                  <button
-                    onClick={handleStartEditing}
-                    className="w-8 h-8 flex items-center justify-center hover:bg-white/20 rounded-full transition-colors text-white flex-shrink-0"
-                  >
-                    ✏️
-                  </button>
-                  <button
-                    ref={menuButtonRef}
-                    onClick={() => setShowMenu(!showMenu)}
-                    className="w-8 h-8 flex items-center justify-center hover:bg-white/20 rounded-full transition-colors text-white flex-shrink-0"
-                  >
-                    ⋮
-                  </button>
-                </>
-              )}
               <button
-                onClick={handleExitView}
+                onClick={handleStartEditing}
                 className="w-8 h-8 flex items-center justify-center hover:bg-white/20 rounded-full transition-colors text-white flex-shrink-0"
-                title={isEditing ? "Save & Return" : "Back"}
               >
-                {isEditing ? "✓" : "←"}
+                ✏️
+              </button>
+              <button
+                ref={menuButtonRef}
+                onClick={() => setShowMenu(!showMenu)}
+                className="w-8 h-8 flex items-center justify-center hover:bg-white/20 rounded-full transition-colors text-white flex-shrink-0"
+              >
+                ⋮
               </button>
             </div>
           </div>
@@ -473,6 +438,18 @@ export default function NoteCard({ note, onUpdate, onDelete, noteNumber = 1, vie
                 {content}
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Cancel and Save Buttons */}
+        <div className="flex justify-between items-center mt-4">
+          <div className="flex gap-2">
+            <button
+              onClick={handleSave}
+              className="px-3 py-1 text-sm bg-blue-500 text-white hover:bg-blue-600 rounded-md transition-colors"
+            >
+              Save
+            </button>
           </div>
         </div>
       </div>
