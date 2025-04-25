@@ -4,7 +4,6 @@ import './globals.css';
 import { Inter } from 'next/font/google';
 import { useEffect, useState } from 'react';
 import LoadingScreen from '@/components/LoadingScreen';
-import { LOADING_DURATIONS } from '@/config/constants';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -16,10 +15,10 @@ export default function RootLayout({
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Show loading screen for configured duration
+    // Show loading screen for 2 seconds
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, LOADING_DURATIONS.APP_LAUNCH);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
