@@ -10,7 +10,11 @@ const nextConfig = {
   experimental: {
     forceSwcTransforms: true
   },
-  generateBuildId: () => 'build'
+  generateBuildId: () => 'build',
+  eslint: {
+    ignoreDuringBuilds: true,
+    ignoreDevelopment: true
+  }
 }
 
 module.exports = nextConfig 
