@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --background: #ffffff;
@@ -47,3 +50,5 @@ body {
 .animate-fade-in-out {
   animation: fadeInOut 2s ease-in-out forwards;
 }
+
+/* Your custom styles below */
