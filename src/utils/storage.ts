@@ -1,6 +1,6 @@
 import localforage from 'localforage';
 import { Note } from '@/types/note';
-import { encryptData, decryptData } from './encryption';
+import { encryptData, decryptData, isNoteArray } from './encryption';
 
 const NOTES_KEY = 'sticky-notes';
 
@@ -23,7 +23,7 @@ export const getNotes = async (): Promise<Note[]> => {
   if (!encryptedNotes) return [];
   
   const decryptedNotes = decryptData(encryptedNotes);
-  return decryptedNotes || [];
+  return isNoteArray(decryptedNotes) ? decryptedNotes : [];
 };
 
 export const deleteNote = async (id: string): Promise<void> => {
